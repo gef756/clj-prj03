@@ -199,3 +199,46 @@
 (take 10 (even-numbers))
 
 (cons 0 '(2 4 6))
+
+; ------------------------------------
+; 3. The collection abstraction
+; ------------------------------------
+
+(empty? [])
+(empty? ["no!"])
+
+(map identity {:sunlight-reaction "Glitter!"}) ; returns a seq (not map)
+(into {} (map identity {:sunlight-reaction "Glitter!"}))  ; now into a map
+
+
+;; conversion back into vector
+(map identity [:garlic :sesame-oil :fried-eggs])
+;; -> seq
+
+(into [] (map identity [:garlic :sesame-oil :fried-eggs]))
+;; -> into vector
+
+;; conversion back into list
+(map identity [:garlic-clove :garlic-clove]) ; -> seq
+
+;; conversion into unique values
+(into #{} (map identity [:garlic-clove :garlic-clove])) ; -> set with unique
+
+;; the first element of into doesn't have to be empty
+(into {:favorite-emotion "gloomy"} [[:sunlight-reaction "Glitter!"]])
+(into ["cherry"] '("pine" "spruce"))
+(into {:favorite-animal "kitty"} {:least-favorite-smell "dog"
+                                  :relationship-with-teenager "creepy"})
+
+; 3.2 conj function
+(conj [0] [1]) ;; -> [0 [1]]
+(into [0] [1]) ;; -> [0 1]
+
+(conj [0] 1 2 3 4)
+(conj {:time "midnight"} [:place "ye olde cemetarium"])
+
+(defn my-conj
+  [target & additions]
+  (into target additions))
+
+(my-conj [0] 1 2 3)
