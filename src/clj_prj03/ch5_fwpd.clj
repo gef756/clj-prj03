@@ -49,7 +49,8 @@
   [minimum-glitter records]
   (filter #(>= (:glitter-index %) minimum-glitter) records))
 
-(mapify (parse (slurp filename)))
+(def population (mapify (parse (slurp filename))))
+population
 
 ;; alternatively, we can see it as:
 (defn mapify-row
@@ -60,7 +61,8 @@
     unmapped-row))
 (mapify-row [:name] ["Joe"])
 
-(glitter-filter 3 (mapify (parse (slurp filename))))
+(def suspects (glitter-filter 3 population))
+suspects
 
 
 ;; Exercise 1. Get just the names
@@ -69,16 +71,14 @@
   (map #(:name %)
     (apply glitter-filter glitter-filter-args)))
 
-(glitter-filter-names 3 (mapify (parse (slurp filename))))
+(glitter-filter-names 3 population)
 
 ;; Exercise 2. Write a prepend method that adds someone to the top of the list
 (defn prepend
   [suspect-name suspect-list]
   (conj suspect-list suspect-name))
 
-(def susps (glitter-filter 3 (mapify (parse (slurp filename)))))
-
-(prepend {:name "Dracula" :glitter-index 5} susps)
+(prepend {:name "Dracula" :glitter-index 5} suspects)
 
 ;; Exercise 3. Write a validate function to check presence of attributes
 ;; :name and :glitter-index
@@ -119,3 +119,15 @@
 (validate validations {})
 (validate validations {:name "John Doe"})
 (validate validations {:glitter-index 12})
+
+
+;; Exercise 4. Write a function that takes your list of maps and converts it to CSV
+(defn export-list
+  [suspect-list]
+  (def header "Name,Glitter Index\n")
+  (def suspects-clean (map #(s/join "," (vals %)) suspect-list))
+  (def output (str header (s/join "\n" suspects-clean)))
+  (println output)
+  (spit "suspects-upd.txt" output))
+
+(export-list suspects)
