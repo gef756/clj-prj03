@@ -37,7 +37,7 @@
     (map (fn [unmapped-row]
            ;; use map to associate each header with its column.
            ;; convert returned seq to map
-           (into {} 
+           (into {}
                  ;; multiple collections sent to map
                  (map (fn [header column]
                         [header ((get conversions header) column)])
@@ -50,3 +50,14 @@
   (filter #(>= (:glitter-index %) minimum-glitter) records))
 
 (mapify (parse (slurp filename)))
+
+;; alternatively, we can see it as:
+(defn mapify-row
+  [headers unmapped-row]
+  (map (fn [header column]
+    [header ((get conversions header) column)])
+    headers
+    unmapped-row))
+(mapify-row [:name] ["Joe"])
+
+(glitter-filter 3 (mapify (parse (slurp filename))))
