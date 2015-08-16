@@ -261,7 +261,7 @@
 (apply max [0 1 2])
 
 ; 4.2 partial
-;; 
+;;
 
 (def add10 (partial + 10))
 (add10 3)
@@ -311,4 +311,3 @@
 (def my-pos? (my-complement neg?))
 (my-pos? 1)
 (my-pos? -1)
-
