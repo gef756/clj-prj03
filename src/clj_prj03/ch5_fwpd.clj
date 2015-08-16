@@ -61,3 +61,61 @@
 (mapify-row [:name] ["Joe"])
 
 (glitter-filter 3 (mapify (parse (slurp filename))))
+
+
+;; Exercise 1. Get just the names
+(defn glitter-filter-names
+  [& glitter-filter-args]
+  (map #(:name %)
+    (apply glitter-filter glitter-filter-args)))
+
+(glitter-filter-names 3 (mapify (parse (slurp filename))))
+
+;; Exercise 2. Write a prepend method that adds someone to the top of the list
+(defn prepend
+  [suspect-name suspect-list]
+  (conj suspect-list suspect-name))
+
+(def susps (glitter-filter 3 (mapify (parse (slurp filename)))))
+
+(prepend {:name "Dracula" :glitter-index 5} susps)
+
+;; Exercise 3. Write a validate function to check presence of attributes
+;; :name and :glitter-index
+(defn validate
+  [val-fns record]
+  (every? identity (map #((second %) ((first %) record)) val-fns)))
+
+(defn validate-name
+  [name]
+  (def res (and
+            ; name should be longer than 3 chars (stupid check, but whatever)
+            (> (count name) 3)
+            ; check there are no numbers in the name
+            (nil? (re-matches #".*\d.*" name))
+            ))
+  res)
+
+(validate-name "John Doe")
+
+(defn validate-glitter
+  [x]
+  ; (println "in validate-glitter with arg" x)
+  (and
+    (integer? x)
+    (>= x 0)
+    (<= x 100)
+  ))
+
+(def validations {:name validate-name
+                  :glitter-index validate-glitter})
+
+(validate validations {:name "John Doe" :glitter-index 12})
+(validate validations {:name "John Doe" :glitter-index 120})
+(validate validations {:name "John Doe" :glitter-index -12})
+(validate validations {:name "John Doe23" :glitter-index 12})
+(validate validations {:name "e" :glitter-index -12})
+(validate validations {:name "e" :glitter-index 2})
+(validate validations {})
+(validate validations {:name "John Doe"})
+(validate validations {:glitter-index 12})
