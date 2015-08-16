@@ -242,3 +242,73 @@
   (into target additions))
 
 (my-conj [0] 1 2 3)
+
+
+; -----------------------------------------
+; 4. Function Functions
+; -----------------------------------------
+
+; 4.1 apply
+
+(defn my-into
+  [target additions]
+  (apply conj target additions))
+
+(my-into [0] [1 2 3])
+(conj [0] 1 2 3)
+
+(max [0 1 2])
+(apply max [0 1 2])
+
+; 4.2 partial
+;; 
+
+(def add10 (partial + 10))
+(add10 3)
+(add10 5)
+
+(def add-missing-element
+  (partial conj ["water" "earth" "air"]))
+
+(add-missing-element "unobtainium" "adamantium")
+
+;; what partial really does
+(defn my-partial
+  [partialized-fn & args]
+  (fn [& more-args]
+    (apply partialized-fn (into more-args (reverse args)))))
+
+(def add20 (my-partial + 20))
+(add20 3)
+
+(defn lousy-logger
+  [log-level message]
+  (condp = log-level
+    :warn (clojure.string/lower-case message)
+    :emergency (clojure.string/upper-case message)))
+
+(def warn (partial lousy-logger :warn))
+(warn "Red light ahead")
+
+; 4.3 complement
+;; opposite of a function
+(defn identify-humans
+  [ssns]
+  (filter #(not (vampire? %))
+    (map vampire-related-details ssns)))
+
+(def not-vampire (complement vampire?))
+(defn identify-humans2
+  [ssns]
+  (filter not-vampire?
+    (map vampire-related-details ssns)))
+
+;; manual implementation
+(defn my-complement
+  [fun]
+  (fn [& args] (not (apply fun args))))
+
+(def my-pos? (my-complement neg?))
+(my-pos? 1)
+(my-pos? -1)
+
