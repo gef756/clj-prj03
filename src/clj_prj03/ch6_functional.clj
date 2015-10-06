@@ -88,3 +88,18 @@
   [text]
   (s/replace (s/trim text) #"lol" "LOL"))
 (clean "My boa constrictor is so sassy lol!")
+
+;;; Part 3: Cool Things with Pure Functions
+
+; Composing functions
+(defn dirty-html->clean-md
+  [dirty-html]
+  (html->md (tidy (clean-chars dirty-html))))
+
+((comp s/lower-case s/trim) " Unclean string ")
+
+; Composing more functions
+(defn two-comp
+  [f g]
+  (fn [& args]
+    (f (apply g args))))
