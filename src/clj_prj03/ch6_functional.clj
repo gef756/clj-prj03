@@ -103,3 +103,20 @@
   [f g]
   (fn [& args]
     (f (apply g args))))
+
+(+ (+ 5 8))
+
+; un-memoized version
+(defn sleepy-identity
+  "Returns the given value after 1 second"
+  [x]
+  (Thread/sleep 1000)
+  x)
+
+(sleepy-identity "Mr. Fantastico")
+
+; memoized version
+; only first call takes 1 second
+(def memo-sleepy-identity (memoize sleepy-identity))
+(memo-sleepy-identity "Mr. Fantastico")
+(memo-sleepy-identity "Mr. Fantastico")
