@@ -269,3 +269,5 @@
   [& args]
   (println "Get ready to play Peg Thing!")
   (prompt-rows))
+
+(-main)
