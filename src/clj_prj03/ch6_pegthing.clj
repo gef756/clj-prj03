@@ -42,7 +42,7 @@
   (every? (fn [pos] (>= max-pos pos)) positions))
 
 (defn connect
-  "Connect "
+  "Connect two positions"
   [board max-pos pos neighbor destination]
   (if (in-bounds? max-pos neighbor destination)
     (reduce (fn [new-board [p1 p2]]
@@ -69,7 +69,7 @@
 (defn connect-down-right
   [board max-pos pos]
   (let [row (row-num pos)
-        neighbor (+1 row pos)
+        neighbor (+ 1 row pos)
         destination (+ 2 row neighbor)]
     (connect board max-pos pos neighbor destination)))
 
