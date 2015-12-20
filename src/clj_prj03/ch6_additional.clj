@@ -75,4 +75,14 @@
 (def users [{:name "James" :age 26}  {:name "John" :age 43}])
 (update-in users [0 :age] inc)
 (update-in users [1 :name] clojure.string/upper-case)
+(update-in users [0 :age] + 10)
+
+;; Exercise 5: implement update-in
+(defn gabe-update-in
+  [m k f & args]
+  (assoc-in m k (apply f (get-in m k) args)))
+
+(gabe-update-in users [0 :age] inc)
+(gabe-update-in users [1 :name] clojure.string/upper-case)
+(gabe-update-in users [0 :age] + 10)
 

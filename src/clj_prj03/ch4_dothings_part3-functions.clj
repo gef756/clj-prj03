@@ -76,7 +76,7 @@ error-message
 
 (defn x-chop
   "describe the kind of chop you're inflicting on someone"
-  ([name chop-type] (str "I " chop-type " chop " name "! Take that!")) 
+  ([name chop-type] (str "I " chop-type " chop " name "! Take that!"))
   ([name] (x-chop name "karate")))
 
 (x-chop "Kanye West" "slap")
@@ -203,4 +203,3 @@ error-message
 
 (def inc3 (inc-maker 3))
 (inc3 7)
-
