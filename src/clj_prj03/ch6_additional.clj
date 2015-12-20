@@ -70,3 +70,9 @@
 (assoc-in users [1 :age] 44)
 (assoc-in users [1 :password] "nhoJ")
 (assoc-in users [2] {:name "Jack" :age 19})
+
+;; Exercise 4: use the update-in function
+(def users [{:name "James" :age 26}  {:name "John" :age 43}])
+(update-in users [0 :age] inc)
+(update-in users [1 :name] clojure.string/upper-case)
+
