@@ -36,6 +36,9 @@
   (fn [& args]
     (f (apply g args))))
 
+;; Exercise 1: Create a new function called attr that can be
+;; called like (attr :intelligence)
+
 (defn attr
   [attr-name]
   (fn [x] (attr-name (:attributes x))))
