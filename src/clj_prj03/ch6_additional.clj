@@ -36,3 +36,9 @@
   (fn [& args]
     (f (apply g args))))
 
+(defn attr
+  [attr-name]
+  (fn [x] (attr-name (:attributes x))))
+
+((attr :intelligence) character)
+((attr :strength) character)
