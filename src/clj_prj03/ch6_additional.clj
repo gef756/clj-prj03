@@ -62,14 +62,14 @@
 
 (defn gabe-assoc-in
   [m [k & ks] v]
-  (if (empty? k)
-    (assoc m ks v)
-    (assoc m (first k) (gabe-assoc-in (get m (first k)) [(rest k) ks] v))))
+  (if (empty? ks)
+    (assoc m k v)
+    (assoc m k (gabe-assoc-in (get m k) ks v))))
 
 (def users [{:name "James" :age 26}  {:name "John" :age 43}])
-(assoc-in users [1 :age] 44)
-(assoc-in users [1 :password] "nhoJ")
-(assoc-in users [2] {:name "Jack" :age 19})
+(gabe-assoc-in users [1 :age] 44)
+(gabe-assoc-in users [1 :password] "nhoJ")
+(gabe-assoc-in users [2] {:name "Jack" :age 19})
 
 ;; Exercise 4: use the update-in function
 (def users [{:name "James" :age 26}  {:name "John" :age 43}])
