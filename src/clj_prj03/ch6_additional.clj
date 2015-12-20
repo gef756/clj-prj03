@@ -45,3 +45,15 @@
 
 ((attr :intelligence) character)
 ((attr :strength) character)
+
+;; Exercise 2: implement the comp function
+
+(defn gabe-comp
+  "my implementation of the comp function"
+  [& fns]
+  (fn [& args]
+    (if (empty? fns)
+      args
+      ((last fns) (apply (gabe-comp (butlast fns)) args)))))
+
+((gabe-comp inc *) 6 2)  ; --> should be 13
